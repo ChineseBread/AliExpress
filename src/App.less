@@ -1,0 +1,32 @@
+@import "antd/dist/antd.compact.min.css";
+@font-face {
+  font-family: font;
+  src:url("./static/font.otf");
+}
+.ant-layout{
+  font-family: font, monospace;
+  //左边导航 固定布局
+  .ant-layout-sider{
+    min-height: 100vh;
+  }
+  //主要区域内容
+  .site-layout{
+    overflow: auto;
+    //padding: 10px 15px;
+    max-height: 100vh;
+    .ant-layout-content{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  // 侧边栏上方标题
+  .logo{
+    height: 64px;
+    width: 100%;
+    text-align: center;
+    line-height: 64px;
+    color: #fff;
+    font-size: 30px;
+  }
+}

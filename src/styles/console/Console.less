@@ -1,0 +1,52 @@
+@console-container-width:100%;
+.console-stage-container{
+  width: @console-container-width;
+  display: flex;
+  justify-content: space-between;
+  //flex后间隔
+  padding: 10px 15px;
+  .console-stage-item{
+    width: 24%;
+    padding: 10px 20px;
+
+    &,.ant-statistic-title{
+      font-size: 18px;
+    }
+    //分界线
+    .ant-divider-horizontal{
+      margin: 10px 0;
+    }
+    //背景色
+    transition: background-color ease-in-out 0.2s;
+    background-color: #fff;
+    &:hover{
+      background-color: #f9f9f9;
+    }
+
+    //底部数据展示
+    .stage-footer{
+      span{
+        margin-right: 10px;
+      }
+    }
+    //加载动画
+    .ant-spin-spinning{
+      position: relative;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+      //height: 100%;
+      //width: 100%;
+    }
+    //错误时
+    .ant-result{
+      padding: 10px 20px;
+    }
+  }
+}
+.console-table-container{
+  //height: 550px;
+  width: @console-container-width;
+  padding: 0 15px;
+  background: #fff;
+}

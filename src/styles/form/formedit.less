@@ -1,0 +1,79 @@
+//表单编辑
+.form-edit-container{
+  background: #fff;
+  padding: 15px 20px;
+  width: 100%;
+  button{
+    float: right;
+    margin-bottom: 10px;
+  }
+  .ant-table-cell{
+    text-align: center;
+  }
+  .editable-cell{
+    cursor: pointer;
+  }
+  //商品标题
+  .data-cell{
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+  }
+  //商品套图及类型
+  .sku-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    .sku-item-info{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 58px;
+      span{
+        display: inline-block;
+        overflow: hidden;
+        width: 100%;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}
+//运费模板
+.template-form-container{
+  padding: 20px 10px 0 10px;
+}
+.type-form-container{
+  padding-top: 20px;
+  .ant-radio-group{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-height: 170px;
+    overflow: auto;
+    .ant-radio-wrapper{
+      width: 32%;
+      padding: 4px 5px;
+      //选择套图
+      //选择套图的类型
+      .radio-item{
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 100px;
+        span{
+          padding: 0 2px;
+          display: inline-block;
+          overflow: hidden;
+          //max-width: 35%;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+}
