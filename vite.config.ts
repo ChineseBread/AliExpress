@@ -41,7 +41,6 @@ export default defineConfig({
       '@components':path.resolve(__dirname,'src/components'),
       '@styles':path.resolve(__dirname,'src/styles'),
       '@config':path.resolve(__dirname,'src/config'),
-      '@type':path.resolve(__dirname,'src/type'),
       "rc-picker/es/generate/moment": "rc-picker/es/generate/dayjs",
     },
   },

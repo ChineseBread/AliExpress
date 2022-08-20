@@ -4,7 +4,7 @@
  */
 import {useEffect, useState} from "react";
 import StageWrapper from "./StageWrapper.js";
-import StageOverviewQuery from "@utils/request/data/StageOverviewQuery";
+import StageOverviewQuery from "@utils/request/StageOverviewQuery";
 
 export default function GoodsStage(){
     const [loading,setLoading] = useState<statusType['loading']>(true)

@@ -3,10 +3,9 @@
  */
 import GoodsList from "@components/Global/GoodsList";
 import {useEffect, useState} from "react";
-import {GoodsData} from "@type/DataType";
 import {TablePaginationConfig} from "antd/es/table";
 import {globalPageOptions} from "@config/table/TableGlobalConfig";
-import GoodsQuery from "@utils/request/data/GoodsQuery";
+import GoodsQuery from "@utils/request/GoodsQuery";
 
 function NewlyIncreasedGoods() {
     const [data, setData] = useState<GoodsData[]>();

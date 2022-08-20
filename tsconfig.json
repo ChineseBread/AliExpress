@@ -5,8 +5,7 @@
       "@pages/*": ["./src/pages/*"],
       "@components/*": ["./src/components/*"],
       "@styles/*": ["./src/styles/*"],
-      "@config/*": ["./src/config/*"],
-      "@type/*": ["./src/type/*"]
+      "@config/*": ["./src/config/*"]
     },
     "target": "ESNext",
     "useDefineForClassFields": true,

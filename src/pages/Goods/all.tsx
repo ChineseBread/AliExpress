@@ -4,8 +4,7 @@ import {Image, Table} from "antd";
 import GoodsSearch from "@components/Goods/GoodsSearch";
 import {TablePaginationConfig} from "antd/es/table/index.js";
 import {globalPageOptions} from "@config/table/TableGlobalConfig";
-import {GoodsData} from "@type/DataType.js";
-import GoodsQuery from "@utils/request/data/GoodsQuery";
+import GoodsQuery from "@utils/request/GoodsQuery";
 import {getTimestamp} from "@utils/TimeUtils";
 const { Column, ColumnGroup } = Table;
 //全部商品

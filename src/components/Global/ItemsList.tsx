@@ -1,5 +1,4 @@
 import {ColumnsType, TablePaginationConfig} from "antd/es/table";
-import {ItemsData} from "@type/DataType";
 import {Image, Table} from "antd";
 import {getTimestamp} from "@utils/TimeUtils";
 //单件表

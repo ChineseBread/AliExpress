@@ -1,41 +1,45 @@
-import {Button, Form, Radio, Row, Image, Spin, Empty} from "antd";
-import React, {useContext, useEffect, useState} from "react";
-import FormQuery from "@utils/request/data/FormQuery";
+import {Button, Form, Radio, Row, Image, Spin, Empty, Popover} from "antd";
+import React, {useCallback, useContext, useEffect, useState} from "react";
+import FormQuery from "@utils/request/FormQuery";
 import {ModalContext} from "@components/Form/FormRowEdit/ModelFormWrapper";
 type props = {
-    ModalData:ModalData | undefined,
-    setModalData:(value:ModalData | undefined) => void
+    ModelData:ModelData | undefined,
+    setModelData:(value:ModelData | undefined) => void
 }
-export default function ImageDataGroup({setModalData,ModalData}:props){
-    const {tableData:{rowKey,data}} = useContext(ModalContext)
-    const {shop_num}:any = data.find(ele => ele.id === rowKey)
+export default function ImageDataGroup({setModelData,ModelData}:props){
+    const {tableData:{rowKey,data,index = 0}} = useContext(ModalContext)
+    const {shop_num,skus}:any = data.find(ele => ele.id === rowKey)
     const [loading,setLoading] = useState(false)
     const [page,setPage] = useState(1)
     const [hasMore,setHasMore] = useState(false)
-    const [groups,setGroups] = useState<{id:string,preview:string}[]>([])
-
+    const [groups,setGroups] = useState<{id:string,preview_image:string}[]>([])
+    const [total,setTotal] = useState(0)
+    const {type_code,type_cost,type_weighs,series_num}:any = ModelData
     useEffect(() => {
-        if (!ModalData) return;
-        const {type_code} = ModalData
+        setGroups([])
+    },[skus[index]])
+    useEffect(() => {
+        if (!ModelData) return;
         setLoading(true)
         FormQuery.getImageListByModal(shop_num,type_code).then(result => {
             if (result.Ok){
                 const {ImageList = [],total = 0} = result
+                setTotal(total)
                 setGroups(ImageList)
                 setHasMore(ImageList.length < total)
                 setPage(2)
             }
             setLoading(false)
         })
-    },[ModalData])
-    const backToModalData = () => {
-        setModalData(undefined)
+    },[ModelData])
+    const backToModelData = () => {
+        setModelData(undefined)
     }
     const getMoreData = () => {
-        if (!ModalData) return
+        if (!ModelData) return
         setLoading(true)
-        const {type_code} = ModalData
-        FormQuery.getImageListByModal(shop_num,type_code,page).then(result => {
+        const {type_code} = ModelData
+        FormQuery.getImageListByModal(shop_num,type_code,12,page).then(result => {
             if (result.Ok){
                 const {ImageList = [],total = 0} = result
                 setGroups(groups => [...groups,...ImageList])
@@ -45,16 +49,41 @@ export default function ImageDataGroup({setModalData,ModalData}:props){
             setLoading(false)
         })
     }
+    const PopoverPreview = useCallback(({preview_image}:any) => {
+        return (
+            <div style={{textAlign:'center'}}>
+                <Image src={preview_image} preview={false} width={220} height={220}/>
+                <div>{type_code}</div>
+                <div>{type_cost}/{type_weighs / 1000}</div>
+            </div>
+        )
+    },[])
     return (
         <>
-            {loading ? <Spin/> : groups.length >= 1 ? <Form name='image-type-form'>
-                <Form.Item name='preview-image' rules={[{required:true,message:'请选择一个类型'}]}>
+            {loading ? <Spin/> : groups.length >= 1 ? <Form layout='vertical' name='image-type-form'>
+                <Form.Item label={`选择套图 : 共有${total}个套图`} name='preview-image' rules={[{required:true,message:'请选择一个类型'}]}>
                     <Radio.Group>
-                        {groups.map(({preview,id}) => <Radio key={id} value={preview}><Image src={preview} width={90} height={90}/></Radio>)}
+                        {groups.map(({preview_image,id}) => {
+                            return <Popover placement='top' key={id} title={null} content={<PopoverPreview preview_image={preview_image}/>}>
+                                <Radio key={id} value={preview_image}>
+                                    <div key={id} className='model-radio-item'>
+                                        <div className='model-tag'>{type_code.substring(0,11)}</div>
+                                        <div className='model-info'>
+                                            <Image height={60} width={60} src={preview_image} preview={false}/>
+                                            <div>
+                                                <div className='model-info-item'>{`${type_cost}`}</div>
+                                                <div className='model-info-item'>{`${type_weighs / 1000}`}</div>
+                                                <div className='model-info-item'>{`P${series_num}`}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Radio>
+                            </Popover>
+                        })}
                     </Radio.Group>
                 </Form.Item>
                 <Row>
-                    <Button style={{width:'50%'}} type='text' onClick={backToModalData}>返回</Button>
+                    <Button style={{width:'50%'}} type='text' onClick={backToModelData}>返回</Button>
                     <Button style={{width:'50%'}} type='text' disabled={!hasMore} onClick={getMoreData}>更多</Button>
                 </Row>
                 <Form.Item><Button type='primary' htmlType='submit' block>确认修改</Button></Form.Item>

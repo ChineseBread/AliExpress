@@ -1,14 +1,13 @@
 /**
  * @description 表单编辑
  */
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {PrevTableColumn, SkuItem} from "@type/PrevTable";
-import {message, Table, Image, Button, Modal, Space} from "antd";
+import {message, Table, Image, Button, Modal, Tooltip, Popover} from "antd";
 import {ColumnsType} from "antd/es/table";
 import ModelFormWrapper from "@components/Form/FormRowEdit/ModelFormWrapper";
 import PrevTableFormDataStorage from "@utils/PrevTableFormDataStorage";
-import FormQuery from "@utils/request/data/FormQuery";
+import FormQuery from "@utils/request/FormQuery";
 
 export default function FormEdit(){
     const navigator = useNavigate()
@@ -45,7 +44,7 @@ export default function FormEdit(){
         PrevTableFormDataStorage.saveData(data)
     }
 
-    const uploadData = () => {
+    const uploadData = useCallback(() => {
         FormQuery.uploadData(data).then(result => {
             if (result.Ok){
                 const {uuid} = result
@@ -57,21 +56,35 @@ export default function FormEdit(){
                 message.warn(result.Msg)
             }
         })
-    }
-    function skuItem(value:SkuItem,rowKey:string,index:number){
-        const {preview_image,tag,weight,price} = value || {preview_image:'',tag:'无型号',weight:0,price:0}
+    },[])
+    const skuItem = useCallback((value:SkuItem,rowKey:string,index:number) => {
+        const {preview_image,tag,weight,price,series_num} = value || {preview_image:'',tag:'无型号',weight:0,price:0}
         const onClick = preview_image ? editRowData(rowKey,'model',index) : () => {message.warn('当前sku无数据')}
         return(
-            <div className='sku-item' >
-                <Image height={48} width={48} src={preview_image}/>
-                <div className='sku-item-info editable-cell' onClick={onClick}>
-                    <span>{tag}</span>
-                    <span>{`${price}元`}</span>
-                    <span>{`0.${weight}kg`}</span>
+            <Popover placement='top' title={null} content={<PopoverPreview {...value}/>}>
+                <div className='sku-item' >
+                    <Image preview={false} height={55} width={55} src={preview_image}/>
+                    <div className='sku-item-info editable-cell' onClick={onClick}>
+                        <Tooltip title={tag}>
+                            <span>{tag}</span>
+                        </Tooltip>
+                        <span>{`${price}元`}</span>
+                        <span>{`${weight / 1000}kg`}</span>
+                        <span>{`P${series_num}`}</span>
+                    </div>
                 </div>
+            </Popover>
+        )
+    },[])
+    const PopoverPreview = useCallback(({preview_image,tag,weight,price}:SkuItem) => {
+        return (
+            <div style={{textAlign:'center'}}>
+                <Image src={preview_image} preview={false} width={220} height={220}/>
+                <div>{tag}</div>
+                <div>{price}/{weight / 1000}</div>
             </div>
         )
-    }
+    },[])
     const columns:ColumnsType<PrevTableColumn> = [
         {
             title:'商品编码',
@@ -80,17 +93,11 @@ export default function FormEdit(){
             width:70,
             fixed:'left'
         },
-        {
-            title:'主推商品',
-            dataIndex:'skus',
-            render:(value,{id},index) => skuItem(value[0],id,index),
-            width:130,
-        },
-        ...(Array.from({length:9}).map((_,index) => ({title:index === 3 ? '搭配商品' : `sku${index + 2}`,dataIndex:'skus',render:(value:SkuItem,{id}:PrevTableColumn) => skuItem(value[index + 1],id,index + 1),width:130}))),
+        ...(Array.from({length:10}).map((_,index) => ({title:`sku${index + 1}`,dataIndex:'skus',render:(value:SkuItem[],{id}:PrevTableColumn) => skuItem(value[index],id,index),width:130,className:`sku-border ${(index == 0 || index == 4) ? 'sku-obvious' : ""}`}))),
         {
             title:'标题',
             dataIndex:'title',
-            render:(value,{id}) => <span className='data-cell editable-cell' onClick={editRowData(id,'title')}>{value || '暂无数据'}</span>,
+            render:(value,{id}) => <Tooltip title={value}><span className='data-cell editable-cell' onClick={editRowData(id,'title')}>{value || '暂无数据'}</span></Tooltip>,
             width:200,
         },
         {
@@ -129,9 +136,11 @@ export default function FormEdit(){
                 columns={columns}
                 rowKey={record => record.id}
             />
-            <Modal  style={{ top: 40 }} transitionName='' visible={visible} footer={null} onCancel={() => setVisible(false)}>
-                <ModelFormWrapper onFinish={onFinish} tableData={editTableData} editType={editType}/>
-            </Modal>
+            {useMemo(() => {
+               return <Modal width={1200} style={{ top: 40 }} transitionName='' visible={visible} footer={null} onCancel={() => setVisible(false)}>
+                   <ModelFormWrapper onFinish={onFinish} tableData={editTableData} editType={editType}/>
+               </Modal>
+            },[visible])}
         </div>
     )
 }

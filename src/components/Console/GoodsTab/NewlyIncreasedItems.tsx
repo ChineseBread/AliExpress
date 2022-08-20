@@ -2,9 +2,8 @@
  * @description 新增单件表
  */
 import ItemsList from "@components/Global/ItemsList";
-import ItemsQuery from "@utils/request/data/ItemsQuery";
+import ItemsQuery from "@utils/request/ItemsQuery";
 import {useEffect, useState} from "react";
-import {ItemsData} from "@type/DataType";
 import {TablePaginationConfig} from "antd/es/table";
 import {globalPageOptions} from "@config/table/TableGlobalConfig";
 function NewlyIncreasedItems() {

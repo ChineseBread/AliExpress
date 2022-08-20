@@ -5,7 +5,7 @@ import {Button, Col, Form, InputNumber, message, Row, Select} from "antd";
 import {useNavigate} from "react-router-dom";
 import ShopType from "@components/Form/FormUpload/ShopType";
 import PrevTableFormDataStorage from "@utils/PrevTableFormDataStorage";
-import FormQuery from "@utils/request/data/FormQuery";
+import FormQuery from "@utils/request/FormQuery";
 const {Option} = Select
 export default function FormUpload(){
     const navigator = useNavigate()
@@ -13,10 +13,12 @@ export default function FormUpload(){
     const onFinish = (value:any) => {
         message.loading({key:'loading',content:'请稍后',duration:20})
         FormQuery.getTablePrevList(value).then(result => {
+            console.log(result)
             if (result.Ok){
                 const {profit_rate,exchange_rate,sales_count,shop_num,price_method} = value
-                const prevTableData = (result.prevTableData || []).map(data => ({...data,price_method,title:'',shopping_template:{},shop_num,profit_rate,exchange_rate,sales_count}))
-                PrevTableFormDataStorage.saveData(prevTableData)
+                let {PrevTableData = [],RandomTitles = []} = result
+                PrevTableData = PrevTableData.map((data,index) => ({...data,price_method,title:RandomTitles[index].title,shopping_template:{},shop_num,profit_rate,exchange_rate,sales_count}))
+                PrevTableFormDataStorage.saveData(PrevTableData)
                 navigator('/form/edit')
                 message.destroy('loading')
             }else{
@@ -49,8 +51,8 @@ export default function FormUpload(){
                 </Form.Item>
                 <Form.Item label='定价方式' name='price_method' initialValue='fixed'>
                     <Select>
-                        <Option key='fixed'>固定</Option>
-                        <Option key='dynamic'>动态</Option>
+                        <Option key='fixed'>区域定价计算器(利润率)</Option>
+                        <Option key='dynamic'>智能定价计算器</Option>
                     </Select>
                 </Form.Item>
                 <Form.Item label='套图是否使用过' name='image_used' initialValue='all'>

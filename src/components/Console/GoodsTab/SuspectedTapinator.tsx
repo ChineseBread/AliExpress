@@ -5,10 +5,9 @@
 import React, {useEffect, useState} from 'react';
 import {ColumnsType, TablePaginationConfig} from "antd/es/table";
 import {Image, Table} from "antd";
-import {getTimestamp} from "@utils/TimeUtils";
 import {globalPageOptions} from "@config/table/TableGlobalConfig";
-import GoodsQuery from "@utils/request/data/GoodsQuery";
-import {SuspectedItemsData} from "@type/DataType";
+import {getTimestamp} from "@utils/TimeUtils";
+import GoodsQuery from "@utils/request/GoodsQuery";
 
 const columns: ColumnsType<SuspectedItemsData> = [
     {

@@ -1,8 +1,7 @@
 import React, {useMemo} from 'react';
 import ModelChange from "@components/Form/FormRowEdit/ModelChange/ModelChange";
-import TitleChange from "@components/Form/FormRowEdit/TitleChange";
-import TemplateChange from "@components/Form/FormRowEdit/TemplateChange";
-import {PrevTableColumn} from "@type/PrevTable";
+import TitleChange from "@components/Form/FormRowEdit/TitleChange/TitleChange";
+import TemplateChange from "@components/Form/FormRowEdit/TemplateChange/TemplateChange";
 import ProfitRate from "@components/Form/FormRowEdit/ProfitRate";
 import Discount from "@components/Form/FormRowEdit/Discount";
 import ExchangeRate from "@components/Form/FormRowEdit/ExchangeRate";

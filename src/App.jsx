@@ -1,15 +1,15 @@
 import {useRoutes,useNavigate} from 'react-router-dom'
 import {
+    AppstoreOutlined,
     ControlOutlined,
     PayCircleOutlined,
     ShopOutlined,
     ShoppingOutlined
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
-import routes from "@config/route/routes.jsx";
+import routes from "@config/route/routes.tsx";
 import '@styles/index.less'
 import './App.less'
-import {useState} from "react";
 
 const { Content, Sider } = Layout;
 
@@ -32,11 +32,13 @@ const items = [
     ]),
     getItem('店铺', 'shop', <ShopOutlined />, [
         getItem('全部店铺','shop/all'),
+        getItem('店铺管理','shop/manage'),
+        getItem('上传店铺','shop/upload')
     ]),
     getItem('爆品', 'hot', <PayCircleOutlined />, [
         getItem('全部爆品','hot/all'),
     ]),
-    getItem('表单页', 'form', <ShopOutlined />,[
+    getItem('前置表格', 'form', <AppstoreOutlined />,[
         getItem('上传','form/add'),
         getItem('编辑','form/edit')
     ]),

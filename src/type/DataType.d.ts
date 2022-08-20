@@ -1,5 +1,4 @@
 //单件列表
-import React from "react";
 
 interface ItemsData {
     info_id:string | number
@@ -10,7 +9,7 @@ interface ItemsData {
     sku_tags:React.ReactNode
     lastupdate:string
 }
-interface GoodsData{
+interface GoodsData {
     good_id:string | number
     shop_code:string | number
     item_id:string | number
@@ -41,7 +40,7 @@ interface GoodsData{
     }
 }
 //断更数据
-interface SuspectedItemsData{
+interface SuspectedItemsData {
     data_id:string | number
     shop_code:string | number
     item_id:string | number
@@ -66,6 +65,3 @@ interface ShopsData {
     shop_cateid:string
     shop_tags:React.ReactNode
 }
-
-
-export {ItemsData,GoodsData,SuspectedItemsData,ShopsData}

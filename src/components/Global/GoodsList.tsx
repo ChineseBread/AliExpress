@@ -1,6 +1,5 @@
 import {Table} from "antd";
 import {ColumnsType, TablePaginationConfig} from "antd/es/table";
-import {GoodsData} from "@type/DataType";
 import {GoodsListDefaultColumns} from "@config/table/TableGlobalConfig";
 
 //商品表

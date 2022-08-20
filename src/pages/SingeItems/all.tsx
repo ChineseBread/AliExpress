@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import ItemsSearch from "@components/SingleItems/ItemsSearch";
-import {ItemsData} from "@type/DataType";
 import {ColumnsType, TablePaginationConfig} from "antd/es/table";
 import {globalPageOptions} from "@config/table/TableGlobalConfig";
 import {useSearchParams} from "react-router-dom";
-import ItemsQuery from "@utils/request/data/ItemsQuery";
+import ItemsQuery from "@utils/request/ItemsQuery";
 import {Image, Table} from "antd";
 import {getTimestamp} from "@utils/TimeUtils";
 const columns: ColumnsType<ItemsData> = [

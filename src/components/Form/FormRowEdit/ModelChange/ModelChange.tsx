@@ -9,7 +9,6 @@ function ModelChange() {
     const onSearch = (value: SearchData) => {
         setValue(value)
     }
-
     return (
         <div className='type-form-container'>
             <ModalSearch onSearch={onSearch}/>

@@ -4,8 +4,7 @@
 import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import GoodsList from "@components/Global/GoodsList";
-import GoodsQuery from "@utils/request/data/GoodsQuery";
-import {GoodsData} from "@type/DataType.js";
+import GoodsQuery from "@utils/request/GoodsQuery";
 import {TablePaginationConfig} from "antd/es/table/index.js";
 import {globalPageOptions} from "@config/table/TableGlobalConfig.js";
 import {Button} from "antd";

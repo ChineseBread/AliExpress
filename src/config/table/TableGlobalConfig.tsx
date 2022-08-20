@@ -1,7 +1,6 @@
 //全局默认分页表页数
-import {ColumnsType} from "antd/es/table";
-import {GoodsData} from "@type/DataType";
 import {Image} from "antd";
+import {ColumnsType} from "antd/es/table";
 import {getTimestamp} from "@utils/TimeUtils";
 
 const globalPageOptions = {

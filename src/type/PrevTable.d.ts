@@ -1,4 +1,4 @@
-interface skuItem{
+interface SkuItem{
     id:number
     series_num:number
     tag:string
@@ -28,6 +28,16 @@ interface PrevTableColumn{
         weight:number,
         name:string
     }
-    skus:skuItem[]
+    skus:SkuItem[]
 }
-export {PrevTableColumn,SkuItem}
+interface PrevTableForm {
+    shop_num:number
+    goods_num:number
+    profit_rate:number
+    price_method:number
+    exchange_rate:number
+    // series_num:number
+    sales_count:number
+    image_used:number
+}
+// export {PrevTableColumn,SkuItem,PrevTableForm}

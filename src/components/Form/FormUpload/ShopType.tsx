@@ -5,7 +5,7 @@
  */
 import React, {useEffect, useState} from "react";
 import {Spin,Select} from "antd";
-import FormQuery from "@utils/request/data/FormQuery";
+import FormQuery from "@utils/request/FormQuery";
 type props = {
     onChange?:(value:string) => void
 }

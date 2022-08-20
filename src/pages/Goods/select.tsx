@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import GoodsSelectForm from "@components/Goods/GoodsSelectForm";
 import GoodsList from "@components/Global/GoodsList";
-import {GoodsData} from "@type/DataType";
 import {ColumnsType, TablePaginationConfig} from "antd/es/table";
 import {globalPageOptions} from "@config/table/TableGlobalConfig";
-import GoodsQuery from "@utils/request/data/GoodsQuery";
+import GoodsQuery from "@utils/request/GoodsQuery";
 //order: all reviews rate likes price
 const columns:ColumnsType<GoodsData> = [
     {

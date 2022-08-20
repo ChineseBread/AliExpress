@@ -2,7 +2,7 @@
  * @description 断更数据
  */
 import {useEffect, useState} from "react";
-import StageOverviewQuery from "@utils/request/data/StageOverviewQuery";
+import StageOverviewQuery from "@utils/request/StageOverviewQuery";
 import StageWrapper from "@components/Console/Stage/StageWrapper";
 import {getCurrentTime} from "@utils/TimeUtils";
 

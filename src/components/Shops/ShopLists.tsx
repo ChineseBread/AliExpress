@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
+import {Link as RouterLink} from "react-router-dom";
 import {Table, Typography} from "antd";
 import {ColumnsType, TablePaginationConfig} from "antd/es/table";
-import {ShopsData} from "@type/DataType";
 import {getTimestamp} from "@utils/TimeUtils";
 import {globalPageOptions} from "@config/table/TableGlobalConfig";
-import ShopsQuery from "@utils/request/data/ShopsQuery";
-import {Link as RouterLink} from "react-router-dom";
+import ShopsQuery from "@utils/request/ShopsQuery";
 const {Link} = Typography
 const columns: ColumnsType<ShopsData> = [
     {
@@ -27,7 +26,7 @@ const columns: ColumnsType<ShopsData> = [
     {
         title:'操作',
         dataIndex:'operation',
-        render:(_,{shop_code}) => <RouterLink to={`/shop/${shop_code}`}>查看店铺商品</RouterLink>,
+        render:(_,{shop_code}) => <RouterLink to={`/shop/goods/${shop_code}`}>查看店铺商品</RouterLink>,
     }
 ];
 //店铺表

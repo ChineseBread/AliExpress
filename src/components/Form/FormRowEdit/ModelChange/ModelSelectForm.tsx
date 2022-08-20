@@ -1,25 +1,32 @@
-import React, {useEffect, useState} from "react";
-import FormQuery from "@utils/request/data/FormQuery";
-import {Button, Empty, Form, Radio, Row, Spin} from "antd";
+import React, {useCallback, useContext, useEffect, useState} from "react";
+import FormQuery from "@utils/request/FormQuery";
+import {Button, Empty, Form, Spin, Image, Popover} from "antd";
+import {ModalContext} from "@components/Form/FormRowEdit/ModelFormWrapper";
 type props = {
-    groups:ModalData[]
-    setGroups:(value:ModalData[]) => void
     SearchData?:SearchData
 }
-export default function ModalDataGroup({groups,setGroups,SearchData}:props){
+export default function ModelDataGroup({SearchData}:props){
+    const {tableData:{rowKey,data,index = 0}} = useContext(ModalContext)
     const [loading,setLoading] = useState(false)
     const [page,setPage] = useState(1)
     const [hasMore,setHasMore] = useState(false)
+    const [groups,setGroups] = useState<ModelData[]>([])
+    const [total,setTotal] = useState(0)
+    const {skus}:any = data.find(ele => ele.id === rowKey)
+    useEffect(() => {
+        setGroups([])
+    },[skus[index]])
     useEffect(() => {
         if (!SearchData) return;
         setLoading(true)
         const {cate,keyword,weight_range} = SearchData
         //请求数据
-        const data = {cate,keyword,max_weight:weight_range[1],min_weight:weight_range[0],limit:12,page:1}
+        const data = {cate,keyword,max_weight:weight_range[1],min_weight:weight_range[0],limit:50,page:1}
         FormQuery.searchItemModal(data).then(result => {
             if (!result.Ok) return;
             const {ModalGroups = [],total = 0} = result
             setGroups(ModalGroups)
+            setTotal(total)
             setLoading(false)
             setHasMore(ModalGroups.length < total)
             setPage(1)
@@ -29,7 +36,7 @@ export default function ModalDataGroup({groups,setGroups,SearchData}:props){
         if (!SearchData) return;
         const {cate,keyword,weight_range} = SearchData
         //请求数据
-        const data = {cate,keyword,max_weight:weight_range[1],min_weight:weight_range[0],limit:12,page:page + 1}
+        const data = {cate,keyword,max_weight:weight_range[1],min_weight:weight_range[0],limit:50,page:page + 1}
         FormQuery.searchItemModal(data).then(result => {
             if (!result.Ok) return
             const {ModalGroups = [],total = 0} = result
@@ -38,32 +45,58 @@ export default function ModalDataGroup({groups,setGroups,SearchData}:props){
             setPage(page => page + 1)
         })
     }
+
     return (
         <>
-            {loading ? <Spin/> : groups.length >= 1 ? <Form name='modal-data-form'>
-                <Form.Item name='itemType' rules={[{required:true,message:'请选择一个类型'}]}>
-                    <Radio.Group>
-                        {groups.map((modalData:ModalData) => {
-                            return (
-                                <Radio key={modalData.type_code} value={modalData}>
-                                    <div className='radio-item'>
-                                        <span>{modalData.type_code}</span>
-                                        <span>{`${modalData.type_cost}元`}</span>
-                                        <span>{`${modalData.type_weighs}g`}</span>
-                                    </div>
-                                </Radio>
-                            )
-                        })}
-                    </Radio.Group>
+            {loading ? <Spin/> : groups.length >= 1 ? <Form layout='vertical' name='modal-data-form'>
+                <Form.Item className='model-data-wrapper' label={`选择型号 : 共有${total}个型号`} name='itemType' rules={[{required:true,message:'请选择一个类型'}]}>
+                    <RadioGroups groups={groups}/>
                 </Form.Item>
                 <Form.Item>
-                    <Row>
-                        <Button style={{width:'50%'}} type='text' htmlType='submit'>查找套图</Button>
-                        <Button style={{width:'50%'}} type='text' disabled={!hasMore} onClick={getMoreData}>更多</Button>
-                    </Row>
+                    <Button style={{width:'100%'}} type='text' disabled={!hasMore} onClick={getMoreData}>更多</Button>
                 </Form.Item>
-                <Form.Item><Button type='primary' htmlType='submit' block>确认修改</Button></Form.Item>
             </Form> : <Empty/>}
+        </>
+
+    )
+}
+function RadioGroups({onChange,groups}:{onChange?:any,groups:ModelData[]}){
+
+    const triggerChange = (value:any) => {
+        onChange?.(value)
+    }
+    const onClick = (value:ModelData) => {
+       return () => {
+           triggerChange(value)
+       }
+    }
+    const PopoverPreview = useCallback(({images,type_weighs,type_code,type_cost}:ModelData) => {
+        return (
+            <div style={{textAlign:'center'}}>
+                <Image src={images[0]} preview={false} width={220} height={220}/>
+                <div>{type_code}</div>
+                <div>{type_cost}/{type_weighs / 1000}</div>
+            </div>
+        )
+    },[])
+    return (
+        <>
+            {groups.map((ele:ModelData) => {
+                const {type_code,images,type_cost,type_weighs,series_num} = ele
+                return <Popover placement='top' key={type_code} title={null} content={<PopoverPreview {...ele}/>}>
+                    <div key={type_code} className='model-radio-item' onClick={onClick(ele)}>
+                        <div className='model-tag'>{type_code.substring(0,11)}</div>
+                        <div className='model-info'>
+                            <Image height={60} width={60} src={images[0]} preview={false}/>
+                            <div>
+                                <div className='model-info-item'>{`${type_cost}`}</div>
+                                <div className='model-info-item'>{`${type_weighs / 1000}`}</div>
+                                <div className='model-info-item'>{`P${series_num}`}</div>
+                            </div>
+                        </div>
+                    </div>
+                </Popover>
+            })}
         </>
 
     )
