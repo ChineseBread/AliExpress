@@ -1,5 +1,5 @@
 /**
- * @description 根据shopcode获取当前店铺的信息
+ * @description 根据shop_code获取当前店铺的信息
  */
 import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";

@@ -13,7 +13,6 @@ export default function FormUpload(){
     const onFinish = (value:any) => {
         message.loading({key:'loading',content:'请稍后',duration:20})
         FormQuery.getTablePrevList(value).then(result => {
-            console.log(result)
             if (result.Ok){
                 const {profit_rate,exchange_rate,sales_count,shop_num,price_method} = value
                 let {PrevTableData = [],RandomTitles = []} = result

@@ -12,9 +12,9 @@ export default function ImageDataGroup({setModelData,ModelData}:props){
     const [loading,setLoading] = useState(false)
     const [page,setPage] = useState(1)
     const [hasMore,setHasMore] = useState(false)
-    const [groups,setGroups] = useState<{id:string,preview_image:string}[]>([])
+    const [groups,setGroups] = useState<{id:string,preview_image:string,series_num:number}[]>([])
     const [total,setTotal] = useState(0)
-    const {type_code,type_cost,type_weighs,series_num}:any = ModelData
+    const {type_code,type_cost,type_weighs}:any = ModelData
     useEffect(() => {
         setGroups([])
     },[skus[index]])
@@ -38,7 +38,6 @@ export default function ImageDataGroup({setModelData,ModelData}:props){
     const getMoreData = () => {
         if (!ModelData) return
         setLoading(true)
-        const {type_code} = ModelData
         FormQuery.getImageListByModal(shop_num,type_code,12,page).then(result => {
             if (result.Ok){
                 const {ImageList = [],total = 0} = result
@@ -63,9 +62,9 @@ export default function ImageDataGroup({setModelData,ModelData}:props){
             {loading ? <Spin/> : groups.length >= 1 ? <Form layout='vertical' name='image-type-form'>
                 <Form.Item label={`选择套图 : 共有${total}个套图`} name='preview-image' rules={[{required:true,message:'请选择一个类型'}]}>
                     <Radio.Group>
-                        {groups.map(({preview_image,id}) => {
+                        {groups.map(({preview_image,id,series_num}) => {
                             return <Popover placement='top' key={id} title={null} content={<PopoverPreview preview_image={preview_image}/>}>
-                                <Radio key={id} value={preview_image}>
+                                <Radio key={id} value={{preview_image,series_num}}>
                                     <div key={id} className='model-radio-item'>
                                         <div className='model-tag'>{type_code.substring(0,11)}</div>
                                         <div className='model-info'>

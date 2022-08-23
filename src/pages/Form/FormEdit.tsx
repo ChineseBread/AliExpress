@@ -37,7 +37,6 @@ export default function FormEdit(){
             setVisible(true)
         }
     }
-
     const onFinish = (data:PrevTableColumn[]) => {
         setData(data)
         setVisible(false)
@@ -85,11 +84,12 @@ export default function FormEdit(){
             </div>
         )
     },[])
+
     const columns:ColumnsType<PrevTableColumn> = [
         {
             title:'商品编码',
             dataIndex:'id',
-            render:id => id,
+            render:(id,record,index) => index + 1,
             width:70,
             fixed:'left'
         },

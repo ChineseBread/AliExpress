@@ -46,7 +46,7 @@ function SelectTemplate({onChange}:any){
         FormQuery.getCarriageTemplate(page,10,shop_num,keyword).then(result => {
             if (!result.Ok) return
             const {Templates = [],total = 0} = result
-            setOptions([...options,...Templates.map(({name,weight}) => ({label:`${name} | 0.${weight}kg`,value:JSON.stringify({weight,name})}))])
+            setOptions([...options,...Templates.map(({name,weight}) => ({label:`${name} | ${weight / 1000}kg`,value:JSON.stringify({weight,name})}))])
             setHasMore(total > Templates.length + options.length)
             setPage(page => page + 1)
             setLoading(false)

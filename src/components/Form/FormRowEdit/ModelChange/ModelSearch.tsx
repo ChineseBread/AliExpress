@@ -1,15 +1,19 @@
+import React, {useContext, useEffect} from "react";
 import {Button, Col, Form, Input, Radio, Row, Slider} from "antd";
-import React, {useContext} from "react";
 import {ModalContext} from "@components/Form/FormRowEdit/ModelFormWrapper";
 type props = {
     onSearch:  (value:SearchData) => void,
 }
 export default function ModelSearch({onSearch}:props){
-    const {tableData:{rowKey,data}} = useContext(ModalContext)
-    const rowData = data.find(ele => ele.id === rowKey)
-    let max = (rowData?.sku1_weight || 0) + 20
+    const {tableData:{rowKey,data,index = 0}} = useContext(ModalContext)
+    const {sku1_weight,skus}:any = data.find(ele => ele.id === rowKey)
+    let max = (sku1_weight || 0) + 20
+    const [form] = Form.useForm()
+    useEffect(() => {
+        form.resetFields()
+    },[skus[index]])
     return(
-        <Form layout='vertical' onFinish={onSearch}>
+        <Form layout='vertical' form={form} onFinish={onSearch}>
            <Row gutter={[50,0]}>
                <Col span={10}>
                    <Form.Item label='型号查找' name='keyword'>

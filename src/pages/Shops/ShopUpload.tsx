@@ -24,11 +24,6 @@ function MajorForm(){
                 <Form.Item label='店铺编号'>
                     <Input/>
                 </Form.Item>
-                <Form.Item label='通用水印'>
-                    <Upload>
-                        <Button icon={<UploadOutlined />}>选择文件</Button>
-                    </Upload>
-                </Form.Item>
                 <Form.Item>
                     <Button style={{width:'100%'}} type='default' htmlType='submit'>完成上传</Button>
                 </Form.Item>

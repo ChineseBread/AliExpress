@@ -20,11 +20,13 @@ export default function ModelForm({SearchData}:props){
         setModelData(undefined)
     },[SearchData])
     const onFormFinish = (formname:string,{forms}:any) => {
+        const imageForm = forms["image-type-form"]
         if (formname === 'image-type-form'){
             //重生成数据
             if ((index === 0 || index === 4) && modelData) {
                 message.loading({key:'loading',content:'重生成行数据中...'})
-                const {type_code,series_num} = modelData
+                const {type_code} = modelData
+                const {series_num} = imageForm.getFieldValue('preview-image')
                 const {shop_num}  = rowData
                 FormQuery.regenerateRowData(type_code,series_num,shop_num,index).then(result => {
                     if (result.Ok){
@@ -36,9 +38,10 @@ export default function ModelForm({SearchData}:props){
                     onFinish(data)
                 })
             }else{
-                const preview_image = forms['image-type-form'].getFieldValue('preview-image')
+                //根据套图型号查找图 型号数据与套图数据结合
+                const {preview_image,series_num} = imageForm.getFieldValue('preview-image')
                 const {type_code:tag,type_weighs:weight,type_cost:price}:any = modelData
-                rowData.skus[index] = {...rowData.skus[index],...{preview_image,weight,tag,price}}
+                rowData.skus[index] = {...rowData.skus[index],...{series_num,preview_image,weight,tag,price}}
                 onFinish(data)
             }
         }

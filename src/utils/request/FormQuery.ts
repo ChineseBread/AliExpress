@@ -22,6 +22,7 @@ class FormQuery {
             try {
                 let result: any = await doDataRequest({url: '/upload_chart/test/prev/list/v2', data: {...formData}})
                 if(result.Ok){
+                    console.log(result.Data)
                     let RandomTitlesResult:any = await this.getRandomTitle('',result.Data.length || 0)
                     if (RandomTitlesResult.Ok){
                         resolve({Ok:true,PrevTableData: result.Data || [],RandomTitles : RandomTitlesResult.RandomTitle || []})
