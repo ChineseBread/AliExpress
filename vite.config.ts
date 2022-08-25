@@ -4,7 +4,7 @@ import path from 'path'
 import flexBugsFixes from 'postcss-flexbugs-fixes'
 import presetEnv from 'postcss-preset-env'
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({command,mode}) => ({
   plugins: [react()],
   //less配置
   css:{
@@ -17,20 +17,29 @@ export default defineConfig({
       plugins:[
         flexBugsFixes,
         presetEnv({
-            autoprefixer: {
-              flexbox: 'no-2009',
-            },
-            stage: 3,
-            features: {
-              'custom-properties': false,
-            }
+          autoprefixer: {
+            flexbox: 'no-2009',
+          },
+          stage: 3,
+          features: {
+            'custom-properties': false,
+          }
         }),
       ]
     }
   },
   //服务器端口
   server:{
-    port:3000
+    port:3000,
+    ...(command === 'serve' && {
+      proxy:{
+        '/app':{
+          target:'http://server.watish.xyz:4381',
+          changeOrigin:true,
+          rewrite: (path) => path.replace(/^\/app/, '')
+        }
+      }
+    })
   },
   resolve:{
     extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'],
@@ -44,4 +53,4 @@ export default defineConfig({
       "rc-picker/es/generate/moment": "rc-picker/es/generate/dayjs",
     },
   },
-})
+}))
