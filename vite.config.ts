@@ -31,10 +31,11 @@ export default defineConfig(({command,mode}) => ({
   //服务器端口
   server:{
     port:3000,
+    // 没有代理可以不配这个
     ...(command === 'serve' && {
       proxy:{
         '/app':{
-          target:'http://server.watish.xyz:4381',
+          target:'',
           changeOrigin:true,
           rewrite: (path) => path.replace(/^\/app/, '')
         }
