@@ -1,7 +1,6 @@
 //表单页查询
-import {doDataRequest} from "@utils/request/request";
+import {baseUrl, doDataRequest} from "@utils/request/request";
 import {Result} from "antd";
-import PrevTableFormDataStorage from "@utils/PrevTableFormDataStorage";
 
 class FormQuery {
     //获取商店的编号
@@ -110,7 +109,7 @@ class FormQuery {
         })
     }
     static downExcel(uuid:string | undefined):string{
-        return `http://server.watish.xyz:4381/api/upload_chart/download/excel/by/uuid?uuid=${uuid}`
+        return `${baseUrl}/api/upload_chart/download/excel/by/uuid?uuid=${uuid}`
     }
 
 }

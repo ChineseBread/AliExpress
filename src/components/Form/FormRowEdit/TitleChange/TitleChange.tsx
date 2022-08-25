@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
 import {Button, Empty, Input, message, Space, Spin} from "antd";
 import {ModalContext} from "@components/Form/FormRowEdit/ModelFormWrapper";
 import debounce from "@utils/debounce";
@@ -29,7 +29,7 @@ function TitleChange() {
            setLoading(false)
        })
     },[])
-    const getRandomTitle = debounce(() => {
+    const getRandomTitle = useCallback(debounce(() => {
         message.loading({key:'loading',content:'生成标题中'})
         FormQuery.getRandomTitle(rowData.skus[0].cate).then(result => {
             if (result.Ok) {
@@ -40,7 +40,7 @@ function TitleChange() {
                 message.warn({key:'loading',content:'生成失败'})
             }
         })
-    },500)
+    },500,true),[])
     const onChange = ({target}:any) => {
       setTitle(target.value)
     }

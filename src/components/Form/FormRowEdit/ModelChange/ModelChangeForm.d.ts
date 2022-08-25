@@ -4,6 +4,7 @@ interface SearchData {
     limit:number
     page:number
     weight_range:number[]
+    order:boolean
 }
 //上一步中已选中的类型数据
 interface ModelData {

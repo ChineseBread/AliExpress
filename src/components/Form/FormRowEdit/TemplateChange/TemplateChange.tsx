@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {Button, Form, Select, Spin} from "antd";
 import {ModalContext} from "@components/Form/FormRowEdit/ModelFormWrapper";
 import FormQuery from "@utils/request/FormQuery";
@@ -60,7 +60,7 @@ function SelectTemplate({onChange}:any){
             </>
         )
     }
-    const debounceFetcher = debounce((value:string) => {
+    const debounceFetcher = useCallback(debounce((value:string) => {
         setOptions([]);
         setLoading(true);
         setHasMore(false)
@@ -73,7 +73,7 @@ function SelectTemplate({onChange}:any){
             setPage(2)
             setLoading(false)
         });
-    },500)
+    },500),[])
     return (
         <Select
             onChange={triggerChange}

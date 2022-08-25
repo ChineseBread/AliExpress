@@ -19,9 +19,9 @@ export default function ModelDataGroup({SearchData}:props){
     useEffect(() => {
         if (!SearchData) return;
         setLoading(true)
-        const {cate,keyword,weight_range} = SearchData
+        const {cate,keyword,weight_range,order} = SearchData
         //请求数据
-        const data = {cate,keyword,max_weight:weight_range[1],min_weight:weight_range[0],limit:50,page:1}
+        const data = {cate,keyword,max_weight:weight_range[1],min_weight:weight_range[0],limit:50,page:1,order}
         FormQuery.searchItemModal(data).then(result => {
             if (!result.Ok) return;
             const {ModalGroups = [],total = 0} = result

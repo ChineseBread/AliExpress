@@ -19,6 +19,8 @@ export default function FormEdit(){
     //行key
     const [editTableData,setEditData] = useState<{rowKey:string,data:PrevTableColumn[],index?:number}>({rowKey:'',data:[]})
     const [editType,setType] = useState('')
+    //修改标记 表格memo优化
+    const [modified,setModified] = useState(false)
     useEffect(() => {
         if (!prevTableData) {
             message.warn('未找到前置表格数据,请先生成前置表格')
@@ -40,6 +42,8 @@ export default function FormEdit(){
     const onFinish = (data:PrevTableColumn[]) => {
         setData(data)
         setVisible(false)
+        //无实际意义
+        setModified(modified => !modified)
         PrevTableFormDataStorage.saveData(data)
     }
 
@@ -85,57 +89,74 @@ export default function FormEdit(){
         )
     },[])
 
-    const columns:ColumnsType<PrevTableColumn> = [
-        {
-            title:'商品编码',
-            dataIndex:'id',
-            render:(id,record,index) => index + 1,
-            width:70,
-            fixed:'left'
-        },
-        ...(Array.from({length:10}).map((_,index) => ({title:`sku${index + 1}`,dataIndex:'skus',render:(value:SkuItem[],{id}:PrevTableColumn) => skuItem(value[index],id,index),width:130,className:`sku-border ${(index == 0 || index == 4) ? 'sku-obvious' : ""}`}))),
-        {
-            title:'标题',
-            dataIndex:'title',
-            render:(value,{id}) => <Tooltip title={value}><span className='data-cell editable-cell' onClick={editRowData(id,'title')}>{value || '暂无数据'}</span></Tooltip>,
-            width:200,
-        },
-        {
-            title:'运费模板',
-            dataIndex:'shopping_template',
-            render:(value,{id}) => <span className='data-cell editable-cell' onClick={editRowData(id,'template')}>{value.weight ? `${value.name} | ${value.weight}g` : '暂无数据'}</span>,
-            width:150
-        },
-        {
-            title:"汇率",
-            dataIndex:'exchange_rate',
-            render:(name,{id}) => <span className='editable-cell' onClick={editRowData(id,'exchange_rate')}>{`${name}%`}</span>,
-            width:70,
-        },
-        {
-            title:"利润率",
-            dataIndex:'profit_rate',
-            render:(name,{id}) => <span className='editable-cell' onClick={editRowData(id,'profit_rate')}>{`${name}%`}</span>,
-            width:70,
-        },
-        {
-            title:"折扣",
-            dataIndex:'sales_count',
-            render:(name,{id}) => <span className='editable-cell' onClick={editRowData(id,'sales_count')}>{`${name}%`}</span>,
-            width:70,
-        },
-    ]
+    const columns:ColumnsType<PrevTableColumn> = useMemo(() => {
+        return [
+            {
+                title:'商品编码',
+                dataIndex:'id',
+                render:(id,record,index) => index + 1,
+                width:70,
+                fixed:'left',
+                shouldCellUpdate:(record,prevRecord) => record.id === prevRecord.id
+            },
+            ...(Array.from({length:10}).map((_,index) => ({
+                title:`sku${index + 1}`,
+                dataIndex:'skus',
+                render:(value:SkuItem[],{id}:PrevTableColumn) => skuItem(value[index],id,index),
+                width:130,
+                className:`sku-border ${(index == 0 || index == 4) ? 'sku-obvious' : ""}`,
+                shouldCellUpdate:(record:PrevTableColumn,prevRecord:PrevTableColumn) => record.skus[index] === prevRecord.skus[index]
+            }))),
+            {
+                title:'标题',
+                dataIndex:'title',
+                render:(value,{id}) => <Tooltip title={value}><span className='data-cell editable-cell' onClick={editRowData(id,'title')}>{value || '暂无数据'}</span></Tooltip>,
+                width:200,
+                shouldCellUpdate:(record,preRecord) =>　record.title === preRecord.title
+            },
+            {
+                title:'运费模板',
+                dataIndex:'shopping_template',
+                render:(value,{id}) => <span className='data-cell editable-cell' onClick={editRowData(id,'template')}>{value.weight ? `${value.name} | ${value.weight}g` : '暂无数据'}</span>,
+                width:150,
+                shouldCellUpdate:({shopping_template:{weight:aweight,name:aname}},{shopping_template:{weight:bweight,name:bname}}) => aweight === bweight && aname === bname
+            },
+            {
+                title:"汇率",
+                dataIndex:'exchange_rate',
+                render:(name,{id}) => <span className='editable-cell' onClick={editRowData(id,'exchange_rate')}>{`${name}%`}</span>,
+                width:70,
+                shouldCellUpdate:(record,preRecord) => record.exchange_rate === preRecord.exchange_rate
+            },
+            {
+                title:"利润率",
+                dataIndex:'profit_rate',
+                render:(name,{id}) => <span className='editable-cell' onClick={editRowData(id,'profit_rate')}>{`${name}%`}</span>,
+                width:70,
+                shouldCellUpdate:(record,preRecord) => record.profit_rate === preRecord.profit_rate
+            },
+            {
+                title:"折扣",
+                dataIndex:'sales_count',
+                render:(name,{id}) => <span className='editable-cell' onClick={editRowData(id,'sales_count')}>{`${name}%`}</span>,
+                width:70,
+                shouldCellUpdate:(record,preRecord) => record.sales_count === preRecord.sales_count
+            },
+        ]
+    },[modified])
 
     return (
         <div className='form-edit-container'>
             <Button onClick={uploadData} type='default'>下载数据</Button>
-            <Table
-                scroll={{x:'calc(100vw - 200px)'}}
-                dataSource={data}
-                pagination={false}
-                columns={columns}
-                rowKey={record => record.id}
-            />
+            {useMemo(() => {
+                return <Table
+                    scroll={{x:'calc(100vw - 200px)'}}
+                    dataSource={data}
+                    pagination={false}
+                    columns={columns}
+                    rowKey={record => record.id}
+                />
+            },[modified])}
             {useMemo(() => {
                return <Modal width={1200} style={{ top: 40 }} transitionName='' visible={visible} footer={null} onCancel={() => setVisible(false)}>
                    <ModelFormWrapper onFinish={onFinish} tableData={editTableData} editType={editType}/>

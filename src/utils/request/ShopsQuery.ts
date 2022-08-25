@@ -1,4 +1,4 @@
-import {doDataRequest} from "@utils/request/request";
+import {baseUrl, doDataRequest} from "@utils/request/request";
 
 class ShopsQuery{
     static getShopsList(page:number = 1,limit:number = 1):Promise<Result<{ShopsList:Array<any>,total:number}>>{
@@ -70,6 +70,20 @@ class ShopsQuery{
             try {
                 let result:any = await doDataRequest({url:'/task/check/raw/image/size/valid'})
                 resolve({Ok:true,status:result.status})
+            }catch (e){
+                resolve({Ok:false})
+            }
+        })
+    }
+    static uploadDefaultWatermark(shop_num:number = 0,type:string,locale:string):string{
+        if(locale === 'default') return shop_num ? `${baseUrl}/upload/watermark/default/${shop_num}/${type}` : ''
+        else return shop_num ? `${baseUrl}/upload/watermark/locale/${locale}/${shop_num}/${type}` : ''
+    }
+    static getWatermark(shop_num:number = 0):Promise<Result<{WatermarkList:object}>>{
+        return new Promise(async (resolve,reject) => {
+            try {
+                let result:any = await doDataRequest({url:'/watermark/list/by/shop',data:{shop_num}})
+                resolve({Ok:result.Ok,WatermarkList:result.Data || {},Msg:result.Msg})
             }catch (e){
                 resolve({Ok:false})
             }

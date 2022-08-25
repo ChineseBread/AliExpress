@@ -18,7 +18,7 @@ export default function Tapinator(){
                     StatisticData:{
                         StageName:'疑似断更',
                         total,
-                        lastUpdate:getCurrentTime()
+                        lastUpdate:getCurrentTime('YYYY-MM-DD HH:mm:ss')
                     },
                     FooterData:{
                         title:'断更占比',

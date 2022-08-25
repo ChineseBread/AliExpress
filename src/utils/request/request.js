@@ -5,12 +5,13 @@ import axios from "axios";
  * @param data
  * @param method
  */
+// const baseUrl = 'http://hk.watish.xyz:4381'
+const baseUrl = '/app'
 function doDataRequest({url,data = {},method = 'GET'}){
 	return new Promise((resolve, reject) => {
 		const dataObj = method.toUpperCase() === 'GET' ? {params:data} : {data}
 		axios.request({
-			url:`/app/api${url}`,
-			// url:`http://hk.watish.xyz:4381/api${url}`,
+			url:`${baseUrl}/api${url}`,
 			...dataObj,
 			method,
 			timeout:20000
@@ -23,4 +24,4 @@ function doDataRequest({url,data = {},method = 'GET'}){
 	})
 }
 
-export {doDataRequest}
+export {doDataRequest,baseUrl}

@@ -1,5 +1,5 @@
 import React, {useContext, useEffect} from "react";
-import {Button, Col, Form, Input, Radio, Row, Slider} from "antd";
+import {Button, Col, Form, Input, Radio, Row, Slider, Switch} from "antd";
 import {ModalContext} from "@components/Form/FormRowEdit/ModelFormWrapper";
 type props = {
     onSearch:  (value:SearchData) => void,
@@ -23,7 +23,7 @@ export default function ModelSearch({onSearch}:props){
                        <Slider range min={0} max={max}/>
                    </Form.Item>
                </Col>
-               <Col span={14}>
+               <Col span={12}>
                    <Form.Item label='类型筛选' initialValue='全部' name='cate' rules={[{required: true, message: '请选择类型'}]}>
                        <Radio.Group>
                            <Radio style={{width:100}} value='上身'>上身</Radio>
@@ -38,7 +38,11 @@ export default function ModelSearch({onSearch}:props){
                            <Radio style={{width:100}} value='全部'>全部</Radio>
                        </Radio.Group>
                    </Form.Item>
-
+               </Col>
+               <Col>
+                   <Form.Item label='排序' name='order' initialValue={true}>
+                       <Switch unCheckedChildren="默认" checkedChildren="最新" defaultChecked/>
+                   </Form.Item>
                </Col>
            </Row>
             <Form.Item>
