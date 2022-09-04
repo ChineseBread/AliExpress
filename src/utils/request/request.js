@@ -1,11 +1,10 @@
 import axios from "axios";
 /**
- * @description 数据请求
+ * @description 数据请求层
  * @param url
  * @param data
  * @param method
  */
-// const baseUrl = 'http://hk.watish.xyz:4381'
 const baseUrl = '/app'
 function doDataRequest({url,data = {},method = 'GET'}){
 	return new Promise((resolve, reject) => {
