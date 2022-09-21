@@ -1,8 +1,7 @@
 import {useRoutes,useNavigate} from 'react-router-dom'
 import {
     AppstoreOutlined,
-    ControlOutlined,
-    PayCircleOutlined,
+    ControlOutlined,ShoppingCartOutlined ,FireOutlined,
     ShopOutlined,
     ShoppingOutlined
 } from '@ant-design/icons';
@@ -23,7 +22,7 @@ function getItem(label, key, icon, children) {
 }
 const items = [
     getItem('控制台', 'console', <ControlOutlined />),
-    getItem('商品', 'good', <ShopOutlined />,[
+    getItem('商品', 'good',   <ShoppingCartOutlined />,[
         getItem('全部商品','good/all'),
         getItem('筛选商品','good/select')
     ]),
@@ -33,10 +32,10 @@ const items = [
     getItem('店铺', 'shop', <ShopOutlined />, [
         getItem('全部店铺','shop/all'),
         getItem('店铺管理','shop/manage'),
-        getItem('上传店铺','shop/upload')
+        getItem('上传店铺','shop/watermark')
     ]),
-    getItem('爆品', 'hot', <PayCircleOutlined />, [
-        getItem('全部爆品','hot/all'),
+    getItem('爆品', 'hot', <FireOutlined />, [
+        getItem('爆品管理','hot/manage'),
     ]),
     getItem('前置表格', 'form', <AppstoreOutlined />,[
         getItem('上传','form/add'),
@@ -50,6 +49,7 @@ function App() {
     const onMenuItemChange = ({key}) => {
         navigator(key)
     }
+
     return (
         <Layout>
             <Sider>

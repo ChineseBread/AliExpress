@@ -1,6 +1,7 @@
 import {baseUrl, doDataRequest} from "@utils/request/request";
 
 class ShopsQuery{
+
     static getShopsList(page:number = 1,limit:number = 1):Promise<Result<{ShopsList:Array<any>,total:number}>>{
         return new Promise(async (resolve,reject) => {
             try {
@@ -55,7 +56,7 @@ class ShopsQuery{
         })
     }
     //更新店铺水印
-    static updateShopWatermark(shop_num:number):Promise<Result<{status:string}>>{
+    static updateShopWatermark(shop_num:number = 0):Promise<Result<{status:string}>>{
        return new Promise(async (resolve,reject) => {
            try {
                let result:any = await doDataRequest({url:'/task/shop/watermark',data:{shop_num,force:true}})
@@ -79,6 +80,7 @@ class ShopsQuery{
         if(locale === 'default') return shop_num ? `${baseUrl}/upload/watermark/default/${shop_num}/${type}` : ''
         else return shop_num ? `${baseUrl}/upload/watermark/locale/${locale}/${shop_num}/${type}` : ''
     }
+
     static getWatermark(shop_num:number = 0):Promise<Result<{WatermarkList:object}>>{
         return new Promise(async (resolve,reject) => {
             try {

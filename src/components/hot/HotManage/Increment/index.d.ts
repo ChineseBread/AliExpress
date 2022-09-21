@@ -1,0 +1,1 @@
+declare type IncrementalData = {from:string,to:string,item_id:HotItem['item_id'],data: {daily_sales:number,quantity_changes:number,wished_changes:number,rate_changes:number,reviews_changes:number}}

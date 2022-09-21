@@ -1,6 +1,6 @@
 /**
  * @description 可查询的数据
- * @Datatype Goods
+ * @Datatype goods
  */
 import {doDataRequest} from "@utils/request/request";
 import {Dayjs} from "dayjs";

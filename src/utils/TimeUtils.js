@@ -21,12 +21,13 @@ dayjs.updateLocale('en', {
 		yy: "%d年"
 	}
 })
+// getStampByString
 function getTimestamp(time){
 	if (typeof time !== 'string') return 0;
 	return dayjs(time).unix()
 }
 function getCurrentTime(format = 'YYYY-MM-DD'){
-	return getFormatTime(new Date() / 1000,format)
+	return getFormatTime(Date.now() / 1000,format)
 }
 function getFormatTime(time,format = 'YYYY-MM-DD HH:mm:ss'){
 	if (time instanceof dayjs) return time.format(format)

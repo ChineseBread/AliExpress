@@ -21,7 +21,6 @@ class FormQuery {
             try {
                 let result: any = await doDataRequest({url: '/upload_chart/test/prev/list/v2', data: {...formData}})
                 if(result.Ok){
-                    console.log(result.Data)
                     let RandomTitlesResult:any = await this.getRandomTitle('',result.Data.length || 0)
                     if (RandomTitlesResult.Ok){
                         resolve({Ok:true,PrevTableData: result.Data || [],RandomTitles : RandomTitlesResult.RandomTitle || []})
@@ -46,10 +45,10 @@ class FormQuery {
         })
     }
     //根据型号筛选图片
-    static getImageListByModal(shop_num:number,type_code:string,limit:number = 36,page:number = 1):Promise<Result<{ImageList:Array<any>,total:number}>>{
+    static getImageListByModal(shop_num:number,type_code:string,series_num:number,limit:number = 36,page:number = 1):Promise<Result<{ImageList:Array<any>,total:number}>>{
         return new Promise(async (resolve,reject) => {
             try {
-                let result:any = await doDataRequest({url:'/upload_chart/list/series/by/tag/shop',data:{shop_num,type_code,limit,page}})
+                let result:any = await doDataRequest({url:'/upload_chart/list/images/by/series',data:{shop_num,type_code,series_num,limit,page}})
                 resolve({Ok:true,ImageList:result.data || [],total:result.count || 0})
             }catch (e){
                 resolve({Ok:false})
@@ -81,7 +80,7 @@ class FormQuery {
     static uploadData(data:Array<any>):Promise<Result<{uuid:string}>>{
         return new Promise(async (resolve,reject) => {
             try {
-                let result:any = await doDataRequest({url:'/upload_chart/make/excel',data,method:'post'})
+                let result:any = await doDataRequest({url:'/upload_chart/make/excel',data,method:'POST'})
                 resolve({Ok:result.Ok,Msg:result.Msg,uuid:result.UUID || ''})
             }catch (e){
                 resolve({Ok:false,Msg:'请求超时'})

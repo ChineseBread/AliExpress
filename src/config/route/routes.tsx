@@ -1,18 +1,19 @@
 /**
  * @description 路由界面配置
  */
-import React from "react";
-import Console from "@pages/Console/Console";
-import AllGoods from "@pages/Goods/all";
-import SelectGoods from "@pages/Goods/select";
-import AllItems from "@pages/SingeItems/all";
-import AllHots from "@pages/Hots/all";
-import FormUpload from "@pages/Form/FormUpload";
-import FormEdit from "@pages/Form/FormEdit";
-import AllShops from "@pages/Shops/all";
-import ShopInfo from "@pages/Shops/ShopInfo";
-import ShopManage from "@pages/Shops/ShopManage";
-import ShopUpload from "@pages/Shops/ShopUpload";
+import Console from "@pages/console/Console";
+import AllGoods from "@pages/goods/All";
+import SelectGoods from "@pages/goods/Select";
+import AllItems from "@pages/singeItems/All";
+import FormUpload from "@pages/form/FormUpload";
+import FormEdit from "@pages/form/FormEdit";
+import AllShops from "@pages/shops/All";
+import ShopInfo from "@pages/shops/ShopInfo";
+import ShopManage from "@pages/shops/ShopManage";
+import ShopWatermark from "@pages/shops/ShopWatermark";
+import HotManage from "@pages/hots/Manage";
+import HotGroups from "@pages/hots/HotGroups";
+import ItemInfo from "@pages/hots/ItemInfo";
 type routeComponets = {
     path:string
     element?:React.ReactNode
@@ -65,14 +66,27 @@ const routes:routeComponets[] = [
                 element: <ShopManage/>,
             },
             {
-                path:'/shop/upload',
-                element: <ShopUpload/>,
+                path:'/shop/watermark',
+                element: <ShopWatermark/>,
             }
         ]
     },
     {
-        path: '/hot/all',
-        element: <AllHots/>
+      path:'/hot',
+      children:[
+          {
+              path:'/hot/manage',
+              element: <HotGroups/>,
+          },
+          {
+              path:'/hot/manage/:hots_id',
+              element: <HotManage/>
+          },
+          {
+              path: '/hot/manage/:hots_id/:item_id',
+              element: <ItemInfo/>
+          }
+      ]
     },
     {
       path:'/form',
