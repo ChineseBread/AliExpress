@@ -13,14 +13,14 @@ import ShopManage from "@pages/shops/ShopManage";
 import ShopWatermark from "@pages/shops/ShopWatermark";
 import HotManage from "@pages/hots/Manage";
 import HotGroups from "@pages/hots/HotGroups";
-import ItemInfo from "@pages/hots/ItemInfo";
-type routeComponets = {
+// import ItemInfo from "@pages/hots/ItemInfo";
+type routeComponent = {
     path:string
-    element?:React.ReactNode
+    element?:JSX.Element
     exact?:boolean
-    children?:routeComponets[]
+    children?:routeComponent[]
 }
-const routes:routeComponets[] = [
+const routes:routeComponent[] = [
     {
       path: '*',
       element: <Console/>
@@ -82,10 +82,10 @@ const routes:routeComponets[] = [
               path:'/hot/manage/:hots_id',
               element: <HotManage/>
           },
-          {
-              path: '/hot/manage/:hots_id/:item_id',
-              element: <ItemInfo/>
-          }
+          // {
+          //     path: '/hot/manage/:hots_id/:item_id',
+          //     element: <ItemInfo/>
+          // }
       ]
     },
     {

@@ -1,49 +1,39 @@
-.hot-manage-data-card .ant-card-head{
-  background-color: #f5f5f5;
-  font-size: 16px;
-}
-//销量对比 日期选择
-.horizontal-list-body{
-  display: flex;
-  width: calc(100vw - 272px);
-  overflow: auto;
-  .horizontal-list-item{
-    margin: 0 5px;
-    .ant-card-body {
-      display: flex;
-      width: 500px;
-      padding: 12px 0;
-      .table-column {
-        flex-grow: 1;
-        flex-shrink: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        &:nth-child(1){
-          align-self: flex-end;
-          text-align: center;
-        }
-        span{
-          padding: 2px 3px;
-        }
-      }
-    }
-  }
-}
-
 
 //商品具体数据和爆品组页基本样式
-.hot-items-manage-container,.hot-items-info-container{
+.hot-items-manage-container{
   width: 100%;
   background: #fff;
   padding: 0 15px;
-  & > div {
-    margin: 15px 0;
+  overflow: auto;
+  //爆品组表
+  #hot-item-table{
+    font-size: 13px;
+    #header-body{
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background-color: #fff;
+    }
+    th{
+      font-size: 14px;
+      padding: 10px 0;
+    }
+    //tr:hover{
+    //}
+    .column-title-cell{
+      min-width: 200px;
+    }
+    .column-title-cell,.column-data-cell{
+      //不换行
+      white-space: nowrap;
+      padding: 5px 10px;
+      text-align: center;
+      border: 1px solid #f0f0f0;
+      border-collapse: collapse;
+    }
+  }
+  .item-analyze-container{
+    margin: 10px 0;
   }
 }
-.hot-items-info-container > .ant-card-head,.hot-items-manage-container .hot-manage-row-form{
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  background: #fff;
-}
+

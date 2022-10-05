@@ -7,8 +7,10 @@ dayjs.extend(updateLocale)
 dayjs.updateLocale('en', {
 	relativeTime: {
 		future: "%s内",
-		past: "%s前",
-		s: '一秒前',
+		// past: "%s前",
+		// s: '一秒前',
+		past: "%s",
+		s: '一秒',
 		m: "一分钟",
 		mm: "%d分钟",
 		h: "一小时",
@@ -23,7 +25,7 @@ dayjs.updateLocale('en', {
 })
 // getStampByString
 function getTimestamp(time){
-	if (typeof time !== 'string') return 0;
+	if (typeof time !== 'string') return getTimestamp(getCurrentTime());
 	return dayjs(time).unix()
 }
 function getCurrentTime(format = 'YYYY-MM-DD'){
@@ -34,6 +36,6 @@ function getFormatTime(time,format = 'YYYY-MM-DD HH:mm:ss'){
 	return dayjs(time * 1000).format(format);
 }
 function getTimeFromNow(time){
-	return dayjs(getFormatTime(time,'YYYY-MM-DD HH:mm:ss')).fromNow()
+	return dayjs(time).fromNow()
 }
 export {getFormatTime,getTimeFromNow,getCurrentTime,getTimestamp}

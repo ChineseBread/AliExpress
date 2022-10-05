@@ -1,13 +1,11 @@
 import React, {useEffect} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
-import {message} from "antd";
-import SalesIncrement from "@components/hot/HotManage/Increment/SalesIncrement";
-import HotForm from '@components/hot/HotManage/HotForm/HotForm';
-import HotItemInfo from '@components/hot/HotManage/DashBoard/HotItemInfo';
-import ItemList from '@components/hot/HotManage/DashBoard/ItemList';
-import SalesList from "@components/hot/HotManage/SalesList/SalesList";
-import ShopInfoList from '@components/hot/HotManage/ShopInfoList/ShopInfoList';
-import FreightList from '@components/hot/HotManage/FreightList/FreightList';
+import {Card, message} from "antd";
+import HotItemList from '@components/hot/HotManage/HotItemList/HotItemList';
+import SalesIncrement from "@components/hot/HotManage/SalesIncrement/SalesIncrement";
+import ItemAnalyze from "@components/hot/HotManage/ItemAnalyze/ItemAnalyze";
+import PriceChange from '@components/hot/HotManage/PriceChange/PriceChange';
+
 
 /**
  * @description 爆品管理
@@ -27,13 +25,12 @@ function HotManage() {
     return (
         <HotContext.Provider value={{hots_id}}>
            <div className='hot-items-manage-container'>
-               <HotForm/>
-               <HotItemInfo/>
-               <ItemList/>
-               <SalesIncrement/>
-               <SalesList/>
-               <ShopInfoList/>
-               <FreightList/>
+               <table id='hot-item-table'>
+                   <HotItemList/>
+                   <PriceChange/>
+                   <SalesIncrement/>
+               </table>
+               <ItemAnalyze/>
            </div>
         </HotContext.Provider>
     )
