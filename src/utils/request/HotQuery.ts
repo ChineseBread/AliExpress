@@ -46,53 +46,6 @@ class HotQuery{
         })
     }
 
-    // static getHotGroupInfo<T,P>(hots_id:HotGroup['hots_id']):Promise<Result<{GroupInfo:T,HotItemInfo:P}>>{
-    //     return new Promise(async (resolve,reject) => {
-    //         try {
-    //             let result:any = await doDataRequest({url:'/hots/detail',data:{hots_id}})
-    //             resolve({Ok:result.Ok,GroupInfo:result.Info,HotItemInfo:result.Data})
-    //         }catch (e){
-    //             resolve({Ok:false})
-    //         }
-    //     })
-    // }
-
-    // static getHotGroupItemList<T>(hots_id:HotGroup['hots_id']):Promise<Result<{ItemList:T}>>{
-    //     return new Promise(async (resolve,reject) => {
-    //         try {
-    //             let result:any = await doDataRequest({url:'/hots/skus/latest',data:{hots_id}})
-    //             resolve({Ok:Object.hasOwn(result,'HotsId'),ItemList:result.Data || []})
-    //         }catch (e){
-    //             resolve({Ok:false})
-    //         }
-    //     })
-    // }
-
-    // static getHotGroupShopInfoList<T>(hots_id:HotGroup["hots_id"]):Promise<Result<{ShopInfoList:T}>>{
-    //     return new Promise(async (resolve,reject) => {
-    //         try {
-    //             let result:any = await doDataRequest({url:'/hots/list/store',data:{hots_id}})
-    //             resolve({Ok:result.Ok,ShopInfoList:result.Data})
-    //         }catch (e){
-    //             resolve({Ok:false})
-    //         }
-    //     })
-    // }
-
-    // static getHotGroupFreight<T>(hots_id:HotGroup['hots_id']):Promise<Result<{FreightList:T}>>{
-    //     return new Promise(async (resolve,reject) => {
-    //         try {
-    //             let result:any = await doDataRequest({url:'/hots/list/shipping',data:{hots_id}})
-    //             if (!result.Ok) resolve({Ok:false})
-    //             let FreightList = result.Data
-    //             let images:string[][] = await Promise.all(FreightList.map(({item_id}:any) => this.getGoodImages(item_id)))
-    //             resolve({Ok:result,FreightList:FreightList.map((freight:any,index:number) => ({...freight,image:images[index][0] || ''}))})
-    //         }catch (e){
-    //             resolve({Ok:false})
-    //         }
-    //     })
-    // }
-
     static getSalesIncrementInWeek<T>(hots_id:HotGroup['hots_id'],start_date:string,end_date:string):Promise<Result<{IncrementData:T}>>{
         return new Promise(async (resolve,reject) => {
             try {
@@ -129,29 +82,6 @@ class HotQuery{
         return this.doSetItem('/hots/set/second/good',hots_id,item_id,start_date)
     }
 
-    // static getGoodDetail<T>(item_id:string):Promise<Result<{GoodDetail:T}>>{
-    //     return new Promise(async (resolve,reject) => {
-    //         try {
-    //             let result:any = await doDataRequest({url:'/hots/good/detail',data:{item_id}})
-    //             resolve({Ok:result.Ok,GoodDetail:result.Data})
-    //         }catch (e){
-    //             resolve({Ok:false})
-    //         }
-    //     })
-    // }
-
-    // // 商品详情页需要获取图片数据 不暴露该方法
-    // private static getGoodImages(item_id:string):Promise<string[]>{
-    //     return new Promise(async (resolve,reject) => {
-    //         try {
-    //             let result:any = await doDataRequest({url:'/hots/good/images',data:{item_id}})
-    //             resolve(result)
-    //         }catch (e){
-    //             resolve([])
-    //         }
-    //     })
-    // }
-
     static getCombineHotGroupDataById<T>(hots_id:HotGroup['hots_id']):Promise<Result<{DataList:T}>>{
         return new Promise(async (resolve,reject) => {
             try {
@@ -173,22 +103,25 @@ class HotQuery{
             }
         })
     }
-    private static doItemAnalyzeAction(url:string,item_id:HotItem['item_id']):Promise<Result<any>>{
+
+    private static doItemAnalyzeAction(url:string,item_id:HotItem['item_id'],sku_id:HotGroupItemSku['sku_id']):Promise<Result<any>>{
         return new Promise(async (resolve,reject) => {
             try {
                 // do action
+                let result:any = await doRequest({url,data:{item_id,sku_id}})
+                resolve({Ok:result.Ok,Msg:result.Msg})
             }catch (e){
                 resolve({Ok:false,Msg:'设置失败'})
             }
         })
     }
     //设为首图单品
-    static setAsFirstImageItem(item_id:HotItem['item_id']):Promise<Result<any>>{
-        return this.doItemAnalyzeAction('',item_id)
+    static setAsFirstImageItem(item_id:HotItem['item_id'],sku_id:HotGroupItemSku['sku_id']):Promise<Result<any>>{
+        return this.doItemAnalyzeAction('/hots/v2/skus/set/primary',item_id,sku_id)
     }
     //设为相同单品
-    static setAsSameItem(item_id:HotItem['item_id']):Promise<Result<any>>{
-        return this.doItemAnalyzeAction('',item_id)
+    static setAsSameItem(item_id:HotItem['item_id'],sku_id:HotGroupItemSku['sku_id']):Promise<Result<any>>{
+        return this.doItemAnalyzeAction('/hots/v2/skus/set/normal',item_id,sku_id)
     }
     static getGoodsShippingByDate<T>(hots_id:HotGroup['hots_id'],start_date:string,end_date:string):Promise<Result<{ShippingList:T}>>{
         return new Promise(async (resolve,reject) => {
@@ -199,6 +132,17 @@ class HotQuery{
                 resolve({Ok:false})
             }
 
+        })
+    }
+
+    static setGoodStartDate(item_id:HotItem['item_id'],start_date:string):Promise<Result<any>>{
+        return new Promise(async (resolve,reject) => {
+            try {
+                let result:any = await doRequest({url:'/hots/v2/goods/set/start_date',data:{item_id,start_date}})
+                resolve({Ok:result.Ok,Msg:result.Msg})
+            }catch (e){
+                resolve({Ok:false,Msg:'设置失败'})
+            }
         })
     }
 }

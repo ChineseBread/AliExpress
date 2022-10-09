@@ -8,11 +8,11 @@ type Props = {
 
 function HeaderInfo({dataSource}:Props) {
     return (
-        <tbody id='header-body'>
+        <tbody id='header_body'>
             <tr>
                 <td className='column-title-cell'>
-                    <div>爆品数量:</div>
-                    <div>竞品数量:</div>
+                    <div>爆品数量:{dataSource.length >= 1 ? 1 : 0}</div>
+                    <div>竞品数量:{dataSource.length >= 1 ? dataSource.length - 1 : 0}</div>
                 </td>
                 {dataSource.map((item,index) => {
                     return <td className='column-data-cell' key={item.item_id}>

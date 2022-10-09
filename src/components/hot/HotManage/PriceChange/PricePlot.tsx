@@ -29,7 +29,6 @@ function PricePlot({dataSource}:Props) {
                     })
                 }
             })
-            console.log(result)
             setData(result)
         }
     }

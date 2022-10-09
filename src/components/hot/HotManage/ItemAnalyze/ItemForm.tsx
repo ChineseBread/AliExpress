@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Button, Form, message, Row, Select, Spin} from "antd";
+import {Button, Form, Row, Select, Spin} from "antd";
 import HotQuery from "@utils/request/HotQuery";
 import {HotContext} from "@pages/hots/Manage";
 
@@ -24,13 +24,13 @@ function ItemForm({onFinish}:Props) {
         })
     },[])
 
-    const doSetAction = (callback:(item_id:HotItem['item_id']) => Promise<Result<any>>) => {
-        return () => {
-            form.validateFields().then(({item_id}) => {
-                callback.call(HotQuery,item_id).then(result => message[result.Ok ? 'success' : 'warn'](result.Msg))
-            }).catch(() => {})
-        }
-    }
+    // const doSetAction = (callback:(item_id:HotItem['item_id']) => Promise<Result<any>>) => {
+    //     return () => {
+    //         form.validateFields().then(({item_id}) => {
+    //             callback.call(HotQuery,item_id).then(result => message[result.Ok ? 'success' : 'warn'](result.Msg))
+    //         }).catch(() => {})
+    //     }
+    // }
     //选择单品
     const beginSelect = () => {
         form.validateFields().then(({item_id}) => onFinish(item_id)).catch(e => {})
@@ -45,12 +45,12 @@ function ItemForm({onFinish}:Props) {
                 <Form.Item>
                     <Button type='default' onClick={beginSelect}>开始选择</Button>
                 </Form.Item>
-                <Form.Item>
+               {/* <Form.Item>
                     <Button type='default' onClick={doSetAction(HotQuery.setAsFirstImageItem)}>设为首图单品</Button>
                 </Form.Item>
                 <Form.Item>
                     <Button type='default' onClick={doSetAction(HotQuery.setAsSameItem)}>设为相同单品</Button>
-                </Form.Item>
+                </Form.Item>*/}
             </Row>
         </Form>
     )

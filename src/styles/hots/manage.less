@@ -7,33 +7,53 @@
   overflow: auto;
   //爆品组表
   #hot-item-table{
+    margin: 0 auto;
     font-size: 13px;
-    #header-body{
-      position: sticky;
-      top: 0;
-      z-index: 2;
-      background-color: #fff;
-    }
+    //表标题
     th{
       font-size: 14px;
       padding: 10px 0;
     }
-    //tr:hover{
-    //}
+
+    #header_body{
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background-color: #fff;
+      transition: box-shadow ease-in-out 0.3s;
+      &:hover{
+        box-shadow: 0 2px 8px -2px #bfbfbf;
+      }
+    }
+
+    #increment_body .increment-data-cell{
+      display: inline-block;
+      width: 40px;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
     .column-title-cell{
       min-width: 200px;
     }
+
     .column-title-cell,.column-data-cell{
       //不换行
       white-space: nowrap;
       padding: 5px 10px;
       text-align: center;
-      border: 1px solid #f0f0f0;
-      border-collapse: collapse;
+      border: none;
+      outline-color: #f0f0f0;
+      outline-style: solid;
+      outline-width: 1px;
+      //border: 1px solid #f0f0f0;
+      //border-collapse: collapse;
     }
   }
   .item-analyze-container{
     margin: 10px 0;
+    position: sticky;
+    left: 0;
   }
 }
 

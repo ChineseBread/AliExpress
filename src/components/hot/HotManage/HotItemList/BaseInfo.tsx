@@ -1,6 +1,12 @@
-import { Image, Space ,Typography ,Tooltip } from "antd"
-import {getTimeFromNow} from "@utils/TimeUtils";
+import {Image, Space, Typography, Tooltip, Button, message, DatePicker} from "antd"
+import {getFormatTime, getTimeFromNow} from "@utils/TimeUtils";
+import {CheckOutlined, CopyOutlined, EditOutlined } from "@ant-design/icons";
+//@ts-ignore
+import {CopyToClipboard} from 'react-copy-to-clipboard';
+import {Fragment, useState} from "react";
+import HotQuery from "@utils/request/HotQuery";
 const {Text} = Typography
+
 type Props = {
     dataSource:DataItem[]
     // onFinish:(callback:(setData:(value:DataItem[]) => void,setModified:(modified:boolean) => void) => void) => void
@@ -11,7 +17,12 @@ const columns:Column<DataItem>[] = [
     {
         title:'商品编码',
         dataIndex:'',
-        render:(value,{data:{item_id}},index) => item_id
+        render:(value,{data:{item_id}},index) => <Space>
+            <span>{item_id}</span>
+            <CopyToClipboard text={item_id}>
+               <Button type='text' onClick={() => message.success('拷贝成功')} icon={ <CopyOutlined />}></Button>
+            </CopyToClipboard>
+        </Space>
     },
     {
       title:'商品名称',
@@ -19,8 +30,13 @@ const columns:Column<DataItem>[] = [
       render:(value,{data:{title},index}) => <Tooltip mouseEnterDelay={0.5} title={title}><Text ellipsis style={{maxWidth:150}}>{title}</Text></Tooltip>
     },
     {
-        title:'上架时间',
-        dataIndex:'',
+      title:'上架时间',
+      dataIndex:'start_date',
+      render:(value,{item_id},index) => <StartDate item_id={item_id} start_date={value}/>
+    },
+    {
+        title:'加入时间',
+        dataIndex:'join_date',
         render:(value,{data:{date}},index) => <Space><span>{date}</span><span>{getTimeFromNow(date)}</span></Space>
     },
     {
@@ -68,5 +84,28 @@ export default function BaseInfo({dataSource}:Props){
                 </tr>
             })}
         </tbody>
+    )
+}
+function StartDate({start_date,item_id}:{item_id:DataItem['item_id'],start_date:DataItem['start_date']}){
+    // start_date might be null
+    const [date,setDate] = useState<string>(start_date || '无上架日期')
+    const [editable,setEditable] = useState(false)
+    const onFinish = () => {
+        HotQuery.setGoodStartDate(item_id,date).then(result => {
+            message[result.Ok ? 'success' : 'warn'](result.Msg)
+            setEditable(false)
+        })
+    }
+    return (
+        <Space>
+            {editable ? <Fragment>
+                <DatePicker onChange={e => setDate(getFormatTime(e,'YYYY-MM-DD'))}/>
+                <Button type='text' icon={<CheckOutlined />} onClick={onFinish}/>
+            </Fragment> : <Fragment>
+                    <span>{date}</span>
+                    <Button type='text' icon={<EditOutlined/>} onClick={() => setEditable(true)}/>
+                </Fragment>
+            }
+        </Space>
     )
 }

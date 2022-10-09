@@ -6,11 +6,45 @@ declare type Column<T> = {
     title:string,
     render?:(value:any,record:T,index:number) => any
 }
-declare type DataItem = IterableData<{item_id:HotItem['item_id'],data:HotItem & {id:string,good_images:string[],store:HotGroupShopInfo,skus:HotGroupItemSku[],shipping:FreightDomain[]}}>
+declare type DataItem = IterableData<{
+    item_id:HotItem['item_id'],
+    join_date:string,
+    start_date:string
+    data:HotItem & {
+        id:string,
+        good_images:string[],
+        store:HotGroupShopInfo,
+        skus:HotGroupItemSku[],
+        shipping:FreightDomain[]
+    }
+}>
+
+declare type DateShipping = {
+    item_id:string
+    good_image:string
+    data:Array<{date:string,data:FreightDomain[]}>
+}
+
 declare type SalesIncrement = IterableData<{
     item_id:string,
     diff_day:number,
     join_date:string,
+    analysis:{
+        cycle:{
+            cycle_sales:number
+            cycle_wished:number
+            cycle_reviews:number
+            cycle_orders:number
+            rate_changes:number
+        }
+        total:{
+            total_sales:number
+            total_wished:number
+            total_reviews:number
+            total_orders:number
+            total_rates:number
+        }
+    }
     range_arr:Array<{
         from:string,
         to:string,
@@ -21,7 +55,8 @@ declare type SalesIncrement = IterableData<{
             quantity_changes:number,
             rate_changes:number,
             reviews_changes:number
-        }}>,
+        }
+    }>,
     history_min:{
         item_id:string,
         date:string,
@@ -36,8 +71,3 @@ declare type AnalyzeItem = IterableData<{
     small_image:string
     big_image:string
 }>
-declare type DateShipping = {
-    item_id:string
-    good_image:string
-    data:Array<{date:string,data:FreightDomain[]}>
-}

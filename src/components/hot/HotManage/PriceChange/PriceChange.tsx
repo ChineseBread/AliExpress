@@ -16,7 +16,7 @@ function PriceChange() {
     const [data,setData] = useState<DateShipping[]>([])
     const [loading,setLoading] = useState(true)
     useEffect(() => {
-        HotQuery.getGoodsShippingByDate<typeof data>(hots_id,getFormatTime(getTimestamp(getCurrentTime()) - 86400 * 30,'YYYY-MM-DD'), getCurrentTime()).then(result => {
+        HotQuery.getGoodsShippingByDate<typeof data>(hots_id,getFormatTime(getTimestamp(getCurrentTime()) - 86400 * 30,'YYYY-MM-DD'),getFormatTime(getTimestamp(getCurrentTime()) - 86400,'YYYY-MM-DD')).then(result => {
             if (result.Ok) setData(result.ShippingList || [])
             setLoading(false)
         })

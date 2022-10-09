@@ -22,9 +22,9 @@ function HotItemList() {
     // }
     return (
         <Skeleton loading={loading}active style={{width:'calc(100vw - 270px)'}}>
+            <HeaderInfo dataSource={data}/>
             { data.length >= 1 ?
                 <Fragment>
-                    <HeaderInfo dataSource={data}/>
                     <BaseInfo dataSource={data}/>
                     <PriceInfo dataSource={data}/>
                 </Fragment> : <Empty/>

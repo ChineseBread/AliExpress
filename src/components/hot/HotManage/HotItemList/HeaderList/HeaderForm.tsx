@@ -21,10 +21,10 @@ function HeaderForm() {
     return (
         <Form title='采集商品' form={form}>
             <Form.Item label='商品编码' name='item_id' rules={[{required:true,message:'请输入商品编码'}]}>
-                <Input style={{width:100}}/>
+                <Input style={{width:'90%'}}/>
             </Form.Item>
             <Form.Item label='上架时间' name='date' rules={[{required:true,message:'请选择上架时间'}]}>
-                <DatePicker style={{width:100}}/>
+                <DatePicker style={{width:'90%'}}/>
             </Form.Item>
             <Row justify='space-evenly'>
                 <Form.Item>

@@ -28,7 +28,7 @@ const columns:ColumnsType<HotGroup> = [
         dataIndex:'weigh'
     },
     {
-        title:'单件数量',
+        title:'商品数量',
         dataIndex:'item_ids',
         render:(ids:HotGroup['items_ids']) => ids.length
     },
